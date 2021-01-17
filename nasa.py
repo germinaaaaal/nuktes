@@ -26,19 +26,18 @@ nowtomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
 print("now.tomorrow: ", nowtomorrow.isoformat())
 """
 # Get current date
-date = datetime.date.today.isoformat()
+date = datetime.date.today().isoformat()
 
 # Fetch the html file
 http = urllib3.PoolManager()
 
 for planet in planet_codes:
     r = http.request("GET", "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=\
-    1&COMMAND='{0}'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='{1} 00:0\
-    0'&STOP_TIME='{1} 23:59'&STEP_SIZE='3h'&QUANTITIES='31'&CSV_FORMAT='YES'".\
+    1&COMMAND='{0}'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='{1} 00:00\
+    '&STOP_TIME='{1} 23:59'&STEP_SIZE='1d'&QUANTITIES='31'&CSV_FORMAT='YES'".\
     format(planet_codes[planet], date))
 
     batch = r.data.decode("utf-8").split("\n")
-    print(batch)
     start = batch.index("$$SOE")
     end = batch.index("$$EOE")
 
