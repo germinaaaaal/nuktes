@@ -30,8 +30,10 @@ def getstars(date=None):
 
     # Get current date and time
     time_today = datetime.datetime.now()
+    print(time_today)
     date_today = datetime.date.today().isoformat()
     format_time_today = "{}:{}".format(time_today.hour, time_today.minute)
+    print(format_time_today)
     # Get date and time in 23h and 59m
     time_tomorrow = datetime.datetime.now() - datetime.timedelta(minutes=1)
     date_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
