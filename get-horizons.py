@@ -12,23 +12,23 @@ planet_codes = {
     "Saturn" : 699,
     "Uranus" : 799,
     "Neptune" : 899,
-    "Pluto" : 999
+    "Pluto" : 999,
+    "Eris" : 136199,
+    "Ceres" : 1,
 }
 
 def getstars(date=None):
-    # This will be to get more precise placements
-    """
-    now = datetime.datetime.now()
+    # Get date and time, convert to UTC
+    now = datetime.datetime.now() - datetime.timedelta(hours=1) # Adjust for system time; in this cast, UTC+1
+    now_format = "{}-{}-{} {}:{}".format(now.year, now.month, now.day, now.hour, now.minute)
 
-    date = "{}-{}-{} {}:{}".format(now.year, now.month, now.day, now.hour, now.minute)
-    print(now.isoformat())
+    tomorrow = datetime.datetime.now() + datetime.timedelta(days=1) # Horizons requires two dates, one for the values and another upper date
+    tomorrow_format = "{}-{}-{} {}:{}".format(tomorrow.year, tomorrow.month, tomorrow.day, tomorrow.hour, tomorrow.minute)
 
-    nowtomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
-    print("now.tomorrow: ", nowtomorrow.isoformat())
-    """
     bar = IncrementalBar("Extracting...", max=len(planet_codes))
 
-    # Get current date and time
+    # Another method to get current date and time
+    """
     time_today = datetime.datetime.now()
     print(time_today)
     date_today = datetime.date.today().isoformat()
@@ -38,21 +38,21 @@ def getstars(date=None):
     time_tomorrow = datetime.datetime.now() - datetime.timedelta(minutes=1)
     date_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
     format_time_tomorrow = "{}:{}".format(time_tomorrow.hour, time_tomorrow.minute)
-
+    """
     # Fetch the html file
     http = urllib3.PoolManager()
     info = {}
 
     for planet in planet_codes:
-        r = http.request("GET", "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=\
-        1&COMMAND='{0}'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='{1} {2}'\
-        &STOP_TIME='{3} {4}'&STEP_SIZE='1d'&QUANTITIES='31'&CSV_FORMAT='NO'".\
-        format(planet_codes[planet], date_today, format_time_today, \
-        date_tomorrow, format_time_tomorrow))
+        # Format request link with current date, time, and planet
+        rlink = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=\
+        1&COMMAND='{0}'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='{1}'\
+        &STOP_TIME='{2}'&STEP_SIZE='1d'&QUANTITIES='31'&CSV_FORMAT='NO'".\
+        format(planet_codes[planet], now_format, tomorrow_format)
+
+        r = http.request("GET", rlink)
 
         batch = r.data.decode("utf-8").split("\n")
-        #for line in batch:
-        #    print(line)
 
         start = batch.index("$$SOE")
         end = batch.index("$$EOE")
