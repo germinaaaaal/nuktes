@@ -18,11 +18,11 @@ planet_codes = {
 }
 
 def getstars(date=None):
-    # Get date and time, convert to UTC
-    now = datetime.datetime.now() - datetime.timedelta(hours=1) # Adjust for system time; in this cast, UTC+1
+    # Get current UTC date and time
+    now = datetime.datetime.utcnow()
     now_format = "{}-{}-{} {}:{}".format(now.year, now.month, now.day, now.hour, now.minute)
 
-    tomorrow = datetime.datetime.now() + datetime.timedelta(days=1) # Horizons requires two dates, one for the values and another upper date
+    tomorrow = datetime.datetime.utcnow() + datetime.timedelta(days=1) # Horizons requires two dates, one for the values and another upper date
     tomorrow_format = "{}-{}-{} {}:{}".format(tomorrow.year, tomorrow.month, tomorrow.day, tomorrow.hour, tomorrow.minute)
 
     bar = IncrementalBar("Extracting...", max=len(planet_codes))
@@ -69,5 +69,3 @@ def getstars(date=None):
         data = list(filter(None, data))
         info[planet] = data[2]
     return(info)
-
-print(getstars())
