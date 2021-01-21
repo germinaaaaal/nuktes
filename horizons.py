@@ -67,5 +67,5 @@ def getstars(date=None):
         data = info[planet]
         data = data.split(" ")
         data = list(filter(None, data))
-        info[planet] = data[2]
+        info[planet] = float(data[2])
     return(info)
