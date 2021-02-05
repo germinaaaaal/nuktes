@@ -14,7 +14,7 @@ planet_codes = {
     "Neptune" : 899,
     "Pluto" : 999,
     "Eris" : 136199,
-    "Ceres" : 1,
+    "Ceres" : 1
 }
 
 def getstars(date=None):
@@ -49,7 +49,6 @@ def getstars(date=None):
         1&COMMAND='{0}'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='{1}'\
         &STOP_TIME='{2}'&STEP_SIZE='1d'&QUANTITIES='31'&CSV_FORMAT='NO'".\
         format(planet_codes[planet], now_format, tomorrow_format)
-
         r = http.request("GET", rlink)
 
         batch = r.data.decode("utf-8").split("\n")
