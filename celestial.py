@@ -20,15 +20,21 @@ signs = {
 class Celestial:
     def __init__(self, name, absolute):
         self.name = name
-        self.absolute = absolute
+        self.absolute = round(absolute, 2)
+        self.sign = None
         for sign in signs:
             if absolute > float(sign):
                 self.sign = signs[sign]
+                self.degree = round(self.absolute - float(sign), 2)
+                break
+                break
+
     def __repr__(self):
-        return "{} - ObsEcLon {}°".format(self.name, self.absolute)
+        return "{} - ObsEcLon {}° - {} {}°".format(self.name, self.absolute, self.sign, self.degree)
 
 celestials = {}
 for star in positions:
     celestials[star] = Celestial(star, positions[star])
 
-print(celestials)
+for celestial in celestials:
+    print(celestials[celestial])
