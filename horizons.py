@@ -1,10 +1,12 @@
 import datetime
 import urllib3
+
 from progress.bar import IncrementalBar
 
 # Link planets to their Horizons code
 planet_codes = {
     "Sun" : 10,
+    "Moon" : 301,
     "Mercury" : 199,
     "Venus" : 299,
     "Mars" : 499,
@@ -19,11 +21,19 @@ planet_codes = {
 
 def getstars(date=None):
     # Get current UTC date and time
-    now = datetime.datetime.utcnow()
-    now_format = "{}-{}-{} {}:{}".format(now.year, now.month, now.day, now.hour, now.minute)
+    if date == None:
+        now = datetime.datetime.utcnow()
+        now_format = "{}-{}-{} {}:{}".format(now.year, now.month, now.day, now.hour, now.minute)
 
-    tomorrow = datetime.datetime.utcnow() + datetime.timedelta(days=1) # Horizons requires two dates, one for the values and another upper date
-    tomorrow_format = "{}-{}-{} {}:{}".format(tomorrow.year, tomorrow.month, tomorrow.day, tomorrow.hour, tomorrow.minute)
+        tomorrow = datetime.datetime.utcnow() + datetime.timedelta(days=1) # Horizons requires two dates, one for the values and another upper date
+        tomorrow_format = "{}-{}-{} {}:{}".format(tomorrow.year, tomorrow.month, tomorrow.day, tomorrow.hour, tomorrow.minute)
+
+    else:
+        now_format = date + ' 12:00'
+        now = datetime.datetime.strptime(now_format, '%Y-%m-%d %H:%M')
+        tomorrow = now + datetime.timedelta(days=1)
+        tomorrow_format = "{}-{}-{} 12:00".format(tomorrow.year, tomorrow.month, tomorrow.day)
+
 
     bar = IncrementalBar("Extracting...", max=len(planet_codes))
 
