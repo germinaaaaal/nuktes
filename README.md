@@ -3,7 +3,7 @@ _νύξ, νύκτες - the night_
 
 an astrology program using NASA data to create pinpoint-precision horoscopes and guidance
 
-this program is being **actively developed** as of January 20th, 2021. this status extends two weeks into the future, as I can't work on it constantly.
+this program is **abandoned** as of February 5th, 2023. this status extends two weeks into the future, as I can't work on it constantly.
 
 this is an incomplete tool to:
 - [+] automate queries to the JPL's Horizons system to fetch the observed ecliptic longitudes
